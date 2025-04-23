@@ -1,0 +1,59 @@
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: O4 C4 C5
+  TEMPLATE::   ATOM_MAP: 1 residue3: BDF
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  OD1  CG   OD2
+  TEMPLATE::   ATOM_MAP: 2 residue3: ASP
+
+  CONSTRAINT:: distanceAB:    2.57   0.2  100.00  1        1
+  CONSTRAINT::    angle_A:  128.10  20.00 100.00  360.00   2
+  CONSTRAINT::    angle_B:  136.60  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_A:  136.46  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_B:   34.68  20.00 100.00  360.00   2
+  CONSTRAINT:: torsion_AB:  -19.37  40.00 100.00  360.00   2
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: O3 C3 C2
+  TEMPLATE::   ATOM_MAP: 1 residue3: BDF
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  NZ   CE   CD 
+  TEMPLATE::   ATOM_MAP: 2 residue3: LYS
+
+  CONSTRAINT:: distanceAB:    3.40   0.2  100.00  1        1
+  CONSTRAINT::    angle_A:  123.75  20.00 100.00  360.00   2
+  CONSTRAINT::    angle_B:  104.33  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_A:   66.13  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_B:  141.78  20.00 100.00  360.00   2
+  CONSTRAINT:: torsion_AB: -131.39  40.00 100.00  360.00   2
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: O2 C2 O6
+  TEMPLATE::   ATOM_MAP: 1 residue3: BDF
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  O    C    CA 
+  TEMPLATE::   ATOM_MAP: 2 residue3: SER
+
+  CONSTRAINT:: distanceAB:    2.59   0.2  100.00  1        1
+  CONSTRAINT::    angle_A:  141.94  20.00 100.00  360.00   2
+  CONSTRAINT::    angle_B:  162.13  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_A:  -59.21  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_B: -149.55  20.00 100.00  360.00   2
+  CONSTRAINT:: torsion_AB:  -21.49  40.00 100.00  360.00   2
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: O1 C1 C2
+  TEMPLATE::   ATOM_MAP: 1 residue3: BDF
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  CA   N    C  
+  TEMPLATE::   ATOM_MAP: 2 residue3: HIS
+
+  CONSTRAINT:: distanceAB:    3.47   0.2  100.00  1        1
+  CONSTRAINT::    angle_A:  146.22  20.00 100.00  360.00   2
+  CONSTRAINT::    angle_B:  109.81  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_A:   -5.72  20.00 100.00  360.00   2
+  CONSTRAINT::  torsion_B:  129.74  20.00 100.00  360.00   2
+  CONSTRAINT:: torsion_AB:   84.16  40.00 100.00  360.00   2
+CST::END

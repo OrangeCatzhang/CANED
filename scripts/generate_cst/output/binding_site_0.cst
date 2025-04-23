@@ -1,0 +1,39 @@
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: MN  
+  TEMPLATE::   ATOM_MAP: 1 residue3:  MN
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  OE2  CD   OE1
+  TEMPLATE::   ATOM_MAP: 2 residue3: GLU
+
+  CONSTRAINT:: distanceAB:    2.02   0.2  100.00  0        1
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: MN  
+  TEMPLATE::   ATOM_MAP: 1 residue3:  MN
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  OD2  CG   OD1
+  TEMPLATE::   ATOM_MAP: 2 residue3: ASP
+
+  CONSTRAINT:: distanceAB:    2.03   0.2  100.00  0        1
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: MN  
+  TEMPLATE::   ATOM_MAP: 1 residue3:  MN
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  ND1  CE1  CG 
+  TEMPLATE::   ATOM_MAP: 2 residue3: HIS
+
+  CONSTRAINT:: distanceAB:    2.27   0.2  100.00  0        1
+CST::END
+
+CST::BEGIN
+  TEMPLATE::   ATOM_MAP: 1 atom_name: MN  
+  TEMPLATE::   ATOM_MAP: 1 residue3:  MN
+
+  TEMPLATE::   ATOM_MAP: 2 atom_name:  OE2  CD   OE1
+  TEMPLATE::   ATOM_MAP: 2 residue3: GLU
+
+  CONSTRAINT:: distanceAB:    2.11   0.2  100.00  0        1
+CST::END

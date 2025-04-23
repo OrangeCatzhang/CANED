@@ -1,0 +1,18 @@
+CRYST1   66.725   66.725  421.606  90.00  90.00 120.00 P 61 2 2     24
+HETATM    1  C1  MAE A 301     -41.610  14.391  10.254  1.00 33.38      D    C  
+HETATM    2  O1  MAE A 301     -41.792  13.211  10.555  1.00 32.92      D    O  
+HETATM    3  C2  MAE A 301     -40.699  14.768   9.146  1.00 33.24      D    C  
+HETATM    4  O2  MAE A 301     -42.201  15.269  10.873  1.00 35.64      D    O  
+HETATM    5  C3  MAE A 301     -39.647  15.559   9.335  1.00 32.47      D    C  
+HETATM    6  O3  MAE A 301     -39.460  15.346  11.656  1.00 33.75      D    O  
+HETATM    7  C4  MAE A 301     -39.263  16.061  10.666  1.00 32.21      D    C  
+HETATM    8  O4  MAE A 301     -38.742  17.173  10.766  1.00 30.54      D    O  
+CONECT    1    2    3    4
+CONECT    2    1
+CONECT    3    1    5
+CONECT    4    1
+CONECT    5    3    7
+CONECT    6    7
+CONECT    7    5    6    8
+CONECT    8    7
+END

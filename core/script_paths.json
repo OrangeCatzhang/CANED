@@ -1,0 +1,13 @@
+{
+    "generate_cst_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/generate_cst/generate_cst.py",
+    "clean_pdb_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/prepare_script/clean_pdb.py",
+    "molfile_to_params_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/prepare_script/molfile_to_params.py",
+    "gen_lig_grids_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts//prepare_script/gen_lig_grids.static.linuxgccrelease",
+    "ECNum_relate_PDBNum_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/prepare_script/ECNum_relate_PDBNum.py",
+    "index_txt": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/prepare_script/index.txt",
+    "match_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/rosettadesign_script/match.static.linuxgccrelease",
+    "design_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/rosettadesign_script/enzyme_design.static.linuxgccrelease",
+    "mpnn_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/mpnn_script",
+    "FastRelax_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/FastRelax.py",
+    "add_matcher_line_to_pdb_script": "/home/bio/workshop/pinyangZhang/plugin/CADPD/scripts/add_matcher_line_to_pdb.py"
+}
