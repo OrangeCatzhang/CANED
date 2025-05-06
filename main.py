@@ -2,19 +2,17 @@ import sys
 import os
 import uuid
 from PyQt5 import QtWidgets, uic
-from pymol import cmd
-from pymol.plugins import addmenuitemqt
-from PyQt5.QtWidgets import QFileSystemModel, QMainWindow
-from core.ui_utils import find_ui_file, select_file, switch_to_page, initialize_download_button
-from core.file_utils import download_pdb, generate_cst, clean_pdb, generate_params, generate_posfile, get_cstdatabasefile, clean_temp
-from core.process_utils import run_command, run_design_command, run_mpnn_command
-from core.analysis_utils import analysis_design_view, analysis_mpnn_view
+from PyQt5.QtWidgets import QMainWindow
+
+from .core.ui_utils import find_ui_file, select_file, switch_to_page
+from .core.file_utils import download_pdb, generate_cst, clean_pdb, generate_params, generate_posfile, get_cstdatabasefile, clean_temp
+from .core.process_utils import run_command, run_design_command, run_mpnn_command
+from .core.analysis_utils import analysis_design_view, analysis_mpnn_view
 
     
 def run_plugin_gui():
 
 
-    
     dialog = QtWidgets.QDialog()
     uifile = find_ui_file('CANED.ui')
     form = uic.loadUi(uifile, dialog)
@@ -50,7 +48,7 @@ def run_plugin_gui():
     form.select_cst_file.clicked.connect(lambda: select_file('select_cst_file', 'cst_file_entry', form))
     form.select_pos_file.clicked.connect(lambda: select_file('select_pos_file', 'pos_file_entry', form))
     form.select_pdb_file.clicked.connect(lambda: select_file('select_pdb_file', 'pdb_file_entry', form))
-    form.run_button.clicked.connect(lambda: update_file_browser(form, run_command(form)))
+    form.run_button.clicked.connect(lambda: run_command(form))
 
     # Design 功能按钮
     form.select_cst_params_2.clicked.connect(lambda: select_file('select_cst_params_2', 'cst_params_entry_2', form))
@@ -58,7 +56,7 @@ def run_plugin_gui():
     form.select_design_pdb_file.clicked.connect(lambda: select_file('select_design_pdb_file', 'design_show_pdbpath', form))
     form.design_upload_scfile.clicked.connect(lambda: select_file('design_upload_scfile', 'design_show_scfilepath_2', form))
     form.design_start_scanalysis.clicked.connect(lambda: analysis_design_view(form.design_show_scfilepath_2.text(), form))
-    form.run_design_button.clicked.connect(lambda: update_file_browser(form, run_design_command(form)))
+    form.run_design_button.clicked.connect(lambda: run_design_command(form))
 
     # MPNN 功能按钮
     form.select_checkpoint_file.clicked.connect(lambda: select_file('select_checkpoint_file', 'checkpoint_file_entry', form))
@@ -125,25 +123,3 @@ class ResultWindow(QMainWindow):
             del self.form.result_windows[self.window_id]
         event.accept()
         
-
-def update_file_browser(form, result_path):
-    """更新文件浏览器"""
-    if result_path:
-        file_system_model = QFileSystemModel()
-        file_system_model.setRootPath(result_path)
-        form.file_tree_view.setModel(file_system_model)
-        form.file_tree_view.setRootIndex(file_system_model.index(result_path))
-        form.file_tree_view.selectionModel().selectionChanged.connect(lambda selected, _: load_pdb_structure(file_system_model, selected))
-        initialize_download_button(form, file_system_model)
-
-def load_pdb_structure(model, selected):
-    """加载选中的 PDB 结构"""
-    indexes = selected.indexes()
-    if indexes and not model.isDir(indexes[0]):
-        cmd.load(model.filePath(indexes[0]))
-        cmd.show('cartoon')
-        cmd.color('auto')
-        cmd.reset()
-
-if __name__ == "__main__":
-    addmenuitemqt("CADPD Plugin", run_plugin_gui)

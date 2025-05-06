@@ -4,12 +4,18 @@ import threading
 from PyQt5 import QtWidgets, QtCore
 from glob import glob
 import pandas as pd
+import json
+
+from pymol import cmd
+from .ui_utils import initialize_download_button
+from PyQt5.QtWidgets import QFileSystemModel
 
 # Load configuration from config.json
 def load_config(config_path="config.json"):
     """Load tool paths from config.json."""
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), config_path)
     try:
-        with open(config_path, "r") as f:
+        with open(config_file, "r") as f:
             config = json.load(f)
         return config
     except FileNotFoundError:
@@ -18,19 +24,17 @@ def load_config(config_path="config.json"):
         raise ValueError(f"Invalid JSON in {config_path}.")
 
 plugin_dir = os.path.dirname(os.path.abspath(__file__))
-# Load paths from config.json
 config = load_config()
 ROSETTA_BIN = config["ROSETTA_BIN"]
 CANED_PYTHON = config["CANED_PYTHON"]
 LIDMPNN_PYTHON = config["LIDMPNN_PYTHON"]
+ROSETTA_DATABASE = config["ROSETTA_DATABASE"]
 CANED_DIR = plugin_dir
-
-
 
 # Define script paths using config
 SCRIPT_PATHS = {
-    "match_script": os.path.join(ROSETTA_BIN, "match.linuxgccrelease"),
-    "design_script": os.path.join(ROSETTA_BIN, "enzyme_design.linuxgccrelease"),
+    "match_script": os.path.join(ROSETTA_BIN, "match.static.linuxgccrelease"),
+    "design_script": os.path.join(ROSETTA_BIN, "enzyme_design.static.linuxgccrelease"),
     "mpnn_script": os.path.join(CANED_DIR, "scripts/mpnn_script/run.py"),
     "add_matcher_line_to_pdb_script": os.path.join(CANED_DIR, "scripts/add_matcher_line_to_pdb.py"),
     "FastRelax_script": os.path.join(CANED_DIR, "scripts/FastRelax.py")
@@ -75,73 +79,117 @@ class TaskSignalEmitter(QtCore.QObject):
     task_finished = QtCore.pyqtSignal(bool)
 
 def run_command(form):
-    """Run Rosetta Match command."""
-    ligand_params = form.cst_params_entry.text()
-    cst_file = form.cst_file_entry.text()
-    pos_file = form.pos_file_entry.text()
-    pdb_file = form.pdb_file_entry.text()
-    try:
-        script_path = SCRIPT_PATHS["match_script"]
-        ligand_name = os.path.splitext(os.path.basename(ligand_params))[0]
-        command = [
-            script_path,
-            "-extra_res_fa", ligand_params,
-            "-match:geometric_constraint_file", cst_file,
-            "-match:scaffold_active_site_residues", pos_file,
-            "-s", pdb_file,
-            "-match:lig_name", ligand_name,
-            "-in:ignore_unrecognized_res",
-            "-ex1", "-ex2",
-            "-match:consolidate_matches", "True",
-            "-match:output_matches_per_group", "1",
-            "-ignore_zero_occupancy", "false"
-        ]
-        os.makedirs("./CADPD_tmp/match_results", exist_ok=True)
-        os.chdir("./CADPD_tmp/match_results")
-        subprocess.Popen(command).wait()
-        os.chdir("../../")
-        return os.getcwd() + "/CADPD_tmp/match_results"
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f"Match error: {e}")
-        return None
+    """Run Rosetta Match command with progress dialog and threading."""
+    dialog = ProgressDialog()
+    dialog.show()
+    signal_emitter = TaskSignalEmitter()
+
+    def run_task():
+        try:
+            dialog.update_status("Starting Rosetta Match task...")
+            ligand_params = form.cst_params_entry.text()
+            cst_file = form.cst_file_entry.text()
+            pos_file = form.pos_file_entry.text()
+            pdb_file = form.pdb_file_entry.text()
+            script_path = SCRIPT_PATHS["match_script"]
+            ligand_name = os.path.splitext(os.path.basename(ligand_params))[0]
+            command = [
+                script_path,
+                "-extra_res_fa", ligand_params,
+                "-match:geometric_constraint_file", cst_file,
+                "-match:scaffold_active_site_residues", pos_file,
+                "-s", pdb_file,
+                "-match:lig_name", ligand_name,
+                "-in:ignore_unrecognized_res",
+                "-ex1", "-ex2",
+                "-match:consolidate_matches", "True",
+                "-match:output_matches_per_group", "1",
+                "-ignore_zero_occupancy", "false"
+            ]
+            os.makedirs("./CADPD_tmp/match_results", exist_ok=True)
+            os.chdir("./CADPD_tmp/match_results")
+            process = subprocess.Popen(command)
+            dialog.processes.append(process)
+            process.wait()
+            os.chdir("../../")
+            if dialog.is_canceled:
+                return
+            dialog.update_status("Rosetta Match task completed successfully")
+            signal_emitter.task_finished.emit(True)
+        except (subprocess.CalledProcessError, FileNotFoundError) as e:
+            print(f"Match error: {e}")
+            dialog.update_status(f"Error: {e}")
+            signal_emitter.task_finished.emit(False)
+
+    def on_task_finished(success):
+        if success and not dialog.is_canceled:
+            browserpath = "CADPD_tmp/match_results/"
+            update_file_browser(form, browserpath)
+            QtCore.QTimer.singleShot(1000, dialog.close)
+
+    signal_emitter.task_finished.connect(on_task_finished)
+    task_thread = threading.Thread(target=run_task)
+    task_thread.start()
 
 def run_design_command(form):
-    """Run Rosetta Design command."""
-    ligand_params = form.cst_params_entry_2.text()
-    cst_file = form.cst_file_entry_2.text()
-    design_pdb_file = form.design_show_pdbpath.text()
-    choosdesign_choosenum = form.design_choosenum.text() or "15"
-    try:
-        script_path = SCRIPT_PATHS["design_script"]
-        protocol_file = os.path.join(ROSETTA_PROTOCOLS, "enzdes_new.xml")
-        command = [
-            script_path,
-            "-s", design_pdb_file,
-            "-enzdes::cstfile", cst_file,
-            "-extra_res_fa", ligand_params,
-            "-run::preserve_header",
-            "-parser:protocol", protocol_file,
-            "-database", ROSETTA_DATABASE,
-            "-enzdes::detect_design_interface",
-            "-enzdes::cut1", "6.0",
-            "-enzdes::cut2", "8.0",
-            "-enzdes::cut3", "10.0",
-            "-enzdes::cut4", "12.0",
-            "-mute", "core.io.database",
-            "-jd2::enzdes_out",
-            "-nstruct", choosdesign_choosenum,
-            "-jd2:ntrials", "1",
-            "-out:file:o", "score.sc",
-            "-ignore_zero_occupancy", "false"
-        ]
-        os.makedirs("./CADPD_tmp/design_results", exist_ok=True)
-        os.chdir("./CADPD_tmp/design_results")
-        subprocess.Popen(command).wait()
-        os.chdir("../../")
-        return os.getcwd() + "/CADPD_tmp/design_results"
-    except (subprocess.CalledProcessError, FileNotFoundError) as e:
-        print(f"Design error: {e}")
-        return None
+    """Run Rosetta Design command with progress dialog and threading."""
+    dialog = ProgressDialog()
+    dialog.show()
+    signal_emitter = TaskSignalEmitter()
+
+    def run_task():
+        try:
+            dialog.update_status("Starting Rosetta Design task...")
+            ligand_params = form.cst_params_entry_2.text()
+            cst_file = form.cst_file_entry_2.text()
+            design_pdb_file = form.design_show_pdbpath.text()
+            choosdesign_choosenum = form.design_choosenum.text() or "15"
+            script_path = SCRIPT_PATHS["design_script"]
+            protocol_file = os.path.join("scripts/", "enzdes_new.xml")
+            command = [
+                script_path,
+                "-s", design_pdb_file,
+                "-enzdes::cstfile", cst_file,
+                "-extra_res_fa", ligand_params,
+                "-run::preserve_header",
+                "-parser:protocol", protocol_file,
+                "-database", ROSETTA_DATABASE,
+                "-enzdes::detect_design_interface",
+                "-enzdes::cut1", "6.0",
+                "-enzdes::cut2", "8.0",
+                "-enzdes::cut3", "10.0",
+                "-enzdes::cut4", "12.0",
+                "-mute", "core.io.database",
+                "-jd2::enzdes_out",
+                "-nstruct", choosdesign_choosenum,
+                "-jd2:ntrials", "1",
+                "-out:file:o", "score.sc",
+                "-ignore_zero_occupancy", "false"
+            ]
+            os.makedirs("./CADPD_tmp/design_results", exist_ok=True)
+            os.chdir("./CADPD_tmp/design_results")
+            process = subprocess.Popen(command)
+            dialog.processes.append(process)
+            process.wait()
+            os.chdir("../../")
+            if dialog.is_canceled:
+                return
+            dialog.update_status("Rosetta Design task completed successfully")
+            signal_emitter.task_finished.emit(True)
+        except (subprocess.CalledProcessError, FileNotFoundError) as e:
+            print(f"Design error: {e}")
+            dialog.update_status(f"Error: {e}")
+            signal_emitter.task_finished.emit(False)
+
+    def on_task_finished(success):
+        if success and not dialog.is_canceled:
+            browserpath = "CADPD_tmp/design_results/"
+            update_file_browser(form, browserpath)
+            QtCore.QTimer.singleShot(1000, dialog.close)
+
+    signal_emitter.task_finished.connect(on_task_finished)
+    task_thread = threading.Thread(target=run_task)
+    task_thread.start()
 
 def parse_pdb_constraints(pdb_file):
     """Parse constraints from PDB file."""
@@ -263,6 +311,25 @@ def run_mpnn_command(form):
     task_thread = threading.Thread(target=run_task)
     task_thread.start()
 
-def update_file_browser(form, path):
+
+
+def update_file_browser(form, result_path):
     """Update file browser (placeholder function, implement as needed)."""
-    print(f"Updating file browser with path: {path}")
+    print(f"Updating file browser with path: {result_path}")
+    if result_path:
+        file_system_model = QFileSystemModel()
+        file_system_model.setRootPath(result_path)
+        form.file_tree_view.setModel(file_system_model)
+        form.file_tree_view.setRootIndex(file_system_model.index(result_path))
+        form.file_tree_view.selectionModel().selectionChanged.connect(lambda selected, _: load_pdb_structure(file_system_model, selected))
+        initialize_download_button(form, file_system_model)
+
+def load_pdb_structure(model, selected):
+    """加载选中的 PDB 结构"""
+    indexes = selected.indexes()
+    if indexes and not model.isDir(indexes[0]):
+        cmd.load(model.filePath(indexes[0]))
+        cmd.show('cartoon')
+        cmd.color('auto')
+        cmd.reset()
+

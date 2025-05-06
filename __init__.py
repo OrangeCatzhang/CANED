@@ -1,8 +1,9 @@
 # __init_plugin__.py
 import os,sys
 from pymol import cmd
-import CANED
-from CANED.core.script_manage import initialize_script_paths
+from . import main
+from pymol.plugins import addmenuitemqt
+
 
 
 # Gets the Python version.
@@ -40,8 +41,6 @@ plugin_dir = os.path.dirname(__file__)
 sys.path.append(plugin_dir)
 
 
-from pymol.plugins import addmenuitemqt
-import  main
 
 def __init_plugin__(app=None):
     if has_gui is None:
@@ -85,10 +84,9 @@ def __init_plugin__(app=None):
         return None
 
 
-    addmenuitemqt("CANED",lambda:CANED.main.run_plugin_gui())
+    addmenuitemqt("CANED",lambda: main.run_plugin_gui())
 
-    script_path_manager = initialize_script_paths()
-    if script_path_manager is None:
-        return  
+    
+
     
 

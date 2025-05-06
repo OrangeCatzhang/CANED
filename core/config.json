@@ -1,0 +1,7 @@
+{
+    "ROSETTA_BIN": "/usr/local/rosetta.binary.linux.release-371/main/source/bin",
+    "OPENBABEL_BIN": "/home/bio/workshop/pinyangZhang/conda/gromacs/bin",
+    "CANED_PYTHON": "/usr/local/pymol/bin/python3.10",
+    "LIDMPNN_PYTHON": "/home/bio/workshop/pinyangZhang/conda/ligandmpnn/bin/python3.11",
+    "ROSETTA_DATABASE": "/usr/local/rosetta.binary.linux.release-371/main/database/"
+}

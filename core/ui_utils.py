@@ -5,24 +5,12 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 def find_ui_file(filename):
     """查找 UI 文件的路径"""
     plugin_dir = os.path.dirname(os.path.abspath(__file__))
-    ui_path = search_in_directory(plugin_dir, filename)
-    if ui_path:
-        return ui_path
-    
-    current_working_dir = os.getcwd()
-    ui_path = search_in_directory(current_working_dir, filename)
-    if ui_path:
-        return ui_path
-    
-    
+    ui_path = os.path.join(plugin_dir,"resources",filename)
+    print(ui_path)
+    if os.path.exists(ui_path):
+        return os.path.abspath(ui_path)
     raise FileNotFoundError(f"Unable to find the UI file: {filename}")
 
-def search_in_directory(directory, filename):
-    """递归搜索目录及其子目录中的文件"""
-    for root, dirs, files in os.walk(directory):
-        if filename in files:
-            return os.path.join(root, filename)
-    return None
 
 def select_file(button_name, line_edit_name, form):
     """选择文件并更新对应的 QLineEdit"""

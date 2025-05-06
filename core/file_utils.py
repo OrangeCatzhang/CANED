@@ -8,8 +8,9 @@ from pathlib import Path
 # Load configuration from config.json
 def load_config(config_path="config.json"):
     """Load tool paths from config.json."""
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), config_path)
     try:
-        with open(config_path, "r") as f:
+        with open(config_file, "r") as f:
             config = json.load(f)
         return config
     except FileNotFoundError:
@@ -31,7 +32,7 @@ SCRIPT_PATHS = {
     "molfile_to_params_script": os.path.join(CANED_DIR, "scripts/prepare_script/molfile_to_params.py"),
     "clean_pdb_script": os.path.join(CANED_DIR, "scripts/prepare_script/clean_pdb.py"),
     "generate_cst_script": os.path.join(CANED_DIR, "scripts/generate_cst/generate_cst.py"),  
-    "gen_lig_grids_script": os.path.join(ROSETTA_BIN, "gen_lig_grids.linuxgccrelease"),  
+    "gen_lig_grids_script": os.path.join(ROSETTA_BIN, "gen_lig_grids.static.linuxgccrelease"),  
     "ECNum_relate_PDBNum_script": os.path.join(CANED_DIR, "scripts/prepare_script/ECNum_relate_PDBNum.py"), 
     "index_txt": os.path.join(CANED_DIR, "scripts/prepare_script/index.txt")  
 }
@@ -134,7 +135,7 @@ def generate_posfile(input_file, input_file2):
         shutil.copy(input_file2, output_path)
         base_name = os.path.basename(input_file)
         base_name2 = os.path.basename(input_file2)
-        subprocess.run([CANED_PYTHON, script_path, "-s", base_name, base_name2, "-grid_active_res_cutoff", "5.0"], check=True)
+        subprocess.run([script_path, "-s", base_name, base_name2, "-grid_active_res_cutoff", "5.0"], check=True)
         os.remove(base_name)
         os.remove(base_name2)
         print(f"POS file generated to: {output_path}")
@@ -180,3 +181,4 @@ def clean_temp():
             print(f"Successfully deleted temporary directory: {temp_dir}")
         except Exception as e:
             print(f"Error deleting temporary directory: {e}")
+    

@@ -37,6 +37,10 @@ def configure_caned():
             input("Enter the LigandMPNN Python interpreter path (e.g., /path/to/ligandmpnn/bin/python3): "),
             is_dir=False, is_executable=True
         )
+        config["ROSETTA_DATABASE"] = validate_path(
+            input("Enter the Rosetta database directory (e.g., /path/to/rosetta/main/database): "),
+            is_dir=True
+        )
     except ValueError as e:
         print(f"Error: {e}")
         return
