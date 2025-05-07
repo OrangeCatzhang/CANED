@@ -6,9 +6,88 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>667</height>
+    <width>300</width>
+    <height>100</height>
    </rect>
+  </property>
+  <property name="styleSheet">
+        <string>
+        QWidget {
+            background-color: #F5F7FA;
+            color: #2C3E50;
+            font-family: "Segoe UI", sans-serif;
+            font-size: 14px;
+        }
+        QLineEdit, QTextEdit {
+            background-color: #FFFFFF;
+            border: 1px solid #DADCE0;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #2C3E50;
+        }
+        QLineEdit:focus, QTextEdit:focus {
+            border: 1px solid #4A90E2;
+        }
+
+        QLineEdit[echoMode="Normal"]::placeholder {
+            color: #A0A0A0;
+        }
+        QFrame, QGroupBox {
+            background-color: #FFFFFF;
+            border: 1px solid #DADCE0;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        QPushButton#primary {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-weight: bold;
+        }
+        QPushButton#primary:hover {
+            background-color: #3B78C2;
+        }
+        QPushButton#primary:pressed {
+            background-color: #2C5E9C;
+            padding-top: 7px;
+            padding-bottom: 5px;
+        }
+
+        QPushButton#secondary {
+            background-color: #DCE9F9;
+            color: #2C3E50;
+            border: 1px solid #AAB2BD;
+            border-radius: 6px;
+            padding: 6px 14px;
+        }
+        QPushButton#secondary:hover {
+            background-color: #BFD9F5;
+        }
+        QPushButton#secondary:pressed {
+            background-color: #A0C5EA;
+            padding-top: 7px;
+            padding-bottom: 5px;
+        }
+
+        QPushButton#menu {
+            background-color: transparent;
+            color: #2C3E50;
+            border: none;
+            font-weight: bold;
+            padding: 6px 12px;
+        }
+        QPushButton#menu:hover {
+            text-decoration: underline;
+            color: #4A90E2;
+        }
+        QPushButton#menu:checked {
+            color: #4A90E2;
+            border-bottom: 2px solid #4A90E2;
+        }
+        </string>
   </property>
   <property name="windowTitle">
    <string>Rosetta Match Plugin</string>
@@ -21,12 +100,18 @@
        <property name="text">
         <string>prepare</string>
        </property>
+       <property name="objectName">
+            <string>menu</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="select_match">
        <property name="text">
         <string>match</string>
+       </property>
+       <property name="objectName">
+            <string>menu</string>
        </property>
       </widget>
      </item>
@@ -35,12 +120,18 @@
        <property name="text">
         <string>enzyme_design</string>
        </property>
+       <property name="objectName">
+            <string>menu</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="select_mpnn">
        <property name="text">
         <string>MPNN and FlastRelax</string>
+       </property>
+       <property name="objectName">
+            <string>menu</string>
        </property>
       </widget>
      </item>
@@ -63,43 +154,6 @@
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
           <widget class="QLabel" name="label_6">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>127</red>
-                 <green>127</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </disabled>
-            </palette>
-           </property>
            <property name="font">
             <font>
              <pointsize>20</pointsize>
@@ -123,7 +177,7 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Get PDB file</string>
+              <string>Download PDB file</string>
              </property>
             </widget>
            </item>
@@ -137,7 +191,10 @@
            <item>
             <widget class="QPushButton" name="prepare_get_pdbfile">
              <property name="text">
-              <string>Get PDB</string>
+              <string>Download PDB</string>
+             </property>
+             <property name="objectName">
+                <string>primary</string>
              </property>
             </widget>
            </item>
@@ -148,44 +205,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
-          <widget class="QLabel" name="label_7">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>127</red>
-                 <green>127</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </disabled>
-            </palette>
-           </property>
+          <widget class="QLabel" name="label_7">      
            <property name="font">
             <font>
              <pointsize>20</pointsize>
@@ -194,7 +214,7 @@
             </font>
            </property>
            <property name="text">
-            <string>File ready </string>
+            <string>File Prepare </string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -219,6 +239,9 @@
                  <property name="text">
                   <string>Upload PDB file</string>
                  </property>
+                 <property name="objectName">
+                    <string>secondary</string>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -233,6 +256,9 @@
                  <property name="text">
                   <string>Upload params file</string>
                  </property>
+                 <property name="objectName">
+                    <string>secondary</string>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -244,6 +270,9 @@
               <widget class="QPushButton" name="prepare_genrate_cst">
                <property name="text">
                 <string>Start</string>
+               </property>
+               <property name="objectName">
+                <string>primary</string>
                </property>
               </widget>
              </item>
@@ -263,6 +292,9 @@
                <property name="text">
                 <string>Upload PDB file</string>
                </property>
+               <property name="objectName">
+                    <string>secondary</string>
+                 </property>
               </widget>
              </item>
              <item>
@@ -272,6 +304,9 @@
               <widget class="QPushButton" name="prepare_generate_cleanpdb">
                <property name="text">
                 <string>Start</string>
+               </property>
+               <property name="objectName">
+                <string>primary</string>
                </property>
               </widget>
              </item>
@@ -291,6 +326,9 @@
                <property name="text">
                 <string>Upload PDB file</string>
                </property>
+               <property name="objectName">
+                    <string>secondary</string>
+                 </property>
               </widget>
              </item>
              <item>
@@ -300,6 +338,9 @@
               <widget class="QPushButton" name="prepare_generate_params">
                <property name="text">
                 <string>Start</string>
+               </property>
+               <property name="objectName">
+                <string>primary</string>
                </property>
               </widget>
              </item>
@@ -321,6 +362,9 @@
                  <property name="text">
                   <string>Upload PDB file</string>
                  </property>
+                 <property name="objectName">
+                    <string>secondary</string>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -335,6 +379,9 @@
                  <property name="text">
                   <string>Upload ligand PDB file</string>
                  </property>
+                 <property name="objectName">
+                    <string>secondary</string>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -346,6 +393,9 @@
               <widget class="QPushButton" name="prepare_generate_posfile">
                <property name="text">
                 <string>Start</string>
+               </property>
+               <property name="objectName">
+                <string>primary</string>
                </property>
               </widget>
              </item>
@@ -359,43 +409,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_8">
          <item>
           <widget class="QLabel" name="label_8">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>252</red>
-                 <green>1</green>
-                 <blue>7</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled>
-              <colorrole role="WindowText">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>127</red>
-                 <green>127</green>
-                 <blue>127</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </disabled>
-            </palette>
-           </property>
+           <property name="styleSheet">
+                <string>background-color:##333333;</string>
+           </property>    
            <property name="font">
             <font>
              <pointsize>20</pointsize>
@@ -439,8 +455,11 @@
            <item>
             <widget class="QPushButton" name="prepare_get_cstfile">
              <property name="text">
-              <string>Get CstFile</string>
+              <string>Prepare CstFile</string>
              </property>
+             <property name="objectName">
+                <string>primary</string>
+               </property>
             </widget>
            </item>
           </layout>
@@ -449,7 +468,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page">
+     <widget class="QWidget" name="design_page">
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout">
@@ -457,6 +476,9 @@
           <widget class="QPushButton" name="design_upload_scfile">
            <property name="text">
             <string>Select ScFile</string>
+           </property>
+           <property name="objectName">
+                  <string>secondary</string>
            </property>
           </widget>
          </item>
@@ -467,6 +489,9 @@
           <widget class="QPushButton" name="design_start_scanalysis">
            <property name="text">
             <string>Analysis</string>
+           </property>
+           <property name="objectName">
+                  <string>primary</string>
            </property>
           </widget>
          </item>
@@ -485,6 +510,9 @@
            <property name="text">
             <string>Select params file</string>
            </property>
+           <property name="objectName">
+                  <string>secondary</string>
+           </property>
           </widget>
          </item>
          <item row="2" column="1">
@@ -492,12 +520,18 @@
            <property name="text">
             <string>Select PDB file</string>
            </property>
+           <property name="objectName">
+                  <string>secondary</string>
+           </property>
           </widget>
          </item>
          <item row="5" column="0" colspan="3">
           <widget class="QPushButton" name="run_design_button">
            <property name="text">
             <string>Run Rosetta Design</string>
+           </property>
+           <property name="objectName">
+                  <string>primary</string>
            </property>
           </widget>
          </item>
@@ -515,6 +549,9 @@
           <widget class="QPushButton" name="select_cst_file_2">
            <property name="text">
             <string>Select CST file</string>
+           </property>
+           <property name="objectName">
+                  <string>secondary</string>
            </property>
           </widget>
          </item>
@@ -549,7 +586,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_3">
+     <widget class="QWidget" name="MPNN_page">
       <layout class="QVBoxLayout" name="verticalLayout_14">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -568,6 +605,9 @@
               <widget class="QPushButton" name="select_checkpoint_file">
                <property name="text">
                 <string>Select MPNN model file</string>
+               </property>
+               <property name="objectName">
+                  <string>secondary</string>
                </property>
               </widget>
              </item>
@@ -618,6 +658,9 @@
                <property name="text">
                 <string>Select PDB file</string>
                </property>
+               <property name="objectName">
+                  <string>secondary</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -657,6 +700,9 @@
                <property name="text">
                 <string>Select CST file</string>
                </property>
+               <property name="objectName">
+                  <string>secondary</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -677,6 +723,9 @@
               <widget class="QPushButton" name="select_paramsfile">
                <property name="text">
                 <string>Select params file</string>
+               </property>
+               <property name="objectName">
+                  <string>secondary</string>
                </property>
               </widget>
              </item>
@@ -728,6 +777,9 @@
            <property name="text">
             <string>Run </string>
            </property>
+           <property name="objectName">
+             <string>primary</string>
+           </property>
           </widget>
          </item>
          <item>
@@ -736,6 +788,9 @@
             <widget class="QPushButton" name="select_score_button">
              <property name="text">
               <string>Select Score File</string>
+             </property>
+             <property name="objectName">
+                  <string>secondary</string>
              </property>
             </widget>
            </item>
@@ -746,6 +801,9 @@
             <widget class="QPushButton" name="analysisscore">
              <property name="text">
               <string>Analysis</string>
+             </property>
+             <property name="objectName">
+                  <string>primary</string>
              </property>
             </widget>
            </item>
@@ -758,7 +816,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
+     <widget class="QWidget" name="match_page">
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_2">
@@ -766,6 +824,9 @@
           <widget class="QPushButton" name="select_cst_params">
            <property name="text">
             <string>Select paramets file</string>
+           </property>
+           <property name="objectName">
+                <string>secondary</string>
            </property>
           </widget>
          </item>
@@ -1048,6 +1109,9 @@
            <property name="text">
             <string>Select Position file:</string>
            </property>
+           <property name="objectName">
+                <string>secondary</string>
+           </property>
           </widget>
          </item>
          <item row="1" column="2">
@@ -1179,6 +1243,9 @@
           <widget class="QPushButton" name="select_cst_file">
            <property name="text">
             <string>Select  CST file</string>
+           </property>
+           <property name="objectName">
+                <string>secondary</string>
            </property>
           </widget>
          </item>
@@ -1312,12 +1379,18 @@
            <property name="text">
             <string>Run Rosetta Match</string>
            </property>
+           <property name="objectName">
+                <string>primary</string>
+           </property>
           </widget>
          </item>
          <item row="3" column="1">
           <widget class="QPushButton" name="select_pdb_file">
            <property name="text">
             <string>Select PDB file:</string>
+           </property>
+           <property name="objectName">
+                  <string>secondary</string>
            </property>
           </widget>
          </item>
