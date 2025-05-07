@@ -274,7 +274,7 @@ CANED uses a `config.json` file to store tool paths. Below are the required conf
 | `OPENBABEL_BIN` | Directory for OpenBabel executables (e.g., obabel) | `/usr/bin` or `/path/to/openbabel/bin` |
 | `CANED_PYTHON` | Python interpreter path for non-LigandMPNN scripts | `/path/to/caned_env/bin/python3` |
 | `LIDMPNN_PYTHON` | Python interpreter path for LigandMPNN scripts | `/path/to/ligandmpnn/bin/python3` |
-| `CONSTRAINT_GEN_DIR` | Directory for the constraint generation tool | `/path/to/CANED/scripts/generate_cst` |
+| `ROSETTA_DATABASE` | Directory for Rosetta database | `/path/to/rosetta/main/database` |
 
 ### 5.3 Using the Configuration Script
 
